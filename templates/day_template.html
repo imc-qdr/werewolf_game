@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Night Time</title>
+</head>
+<body>
+
+	{% for person in all %}
+        <div><div>{{ person.name }}</div> <div>is dead {{ person.is_dead }}</div></div>
+    {% endfor %}
+
+  <form action="" name = "Vote" method="POST">
+      {% csrf_token %}
+      <label for="vote">Villagers chose to kill</label>
+      <select name="vote">
+          {% for person in alive %}
+                <option value="{{ person }}">{{ person.name }}</option>
+          {% endfor %}
+      </select>
+      <button type='submit'> Kill Player </button>
+
+  </form>
+
+  <a href="{% url 'night_template' %}">To night Time</a>
+
+
+
+
+</body>
+</html>
