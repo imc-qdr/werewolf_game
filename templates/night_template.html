@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Night Time</title>
+</head>
+
+
+	{% for werewolf in werewolves %}
+        <div><div>{{ werewolf.name }} </div> <div>is dead {{ werewolf.is_dead }}</div></div>
+    {% endfor %}
+
+  <form action="" name = "Vote" method="POST">
+      {% csrf_token %}
+      <label for="vote">Werewolves decided to kill</label>
+      <select name="vote">
+          {% for rest in rest %}
+                <option value="{{ rest }}">{{ rest.name }}</option>
+          {% endfor %}
+      </select>
+      <button type='submit'>Kill</button>
+    </form>
+
+    {% if humans_won == false %}
+        <a href="{% url 'day_template' %}">Go to Day</a>
+    {% else %}
+        <a href="{% url 'admin' %}">Go to Admin</a>
+    {% endif %}
+
+</body>
+</html>
