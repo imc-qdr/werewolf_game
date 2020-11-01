@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Day1</title>
+</head>
+<body>
+
+	<p>It is the break of dawn. The Villgers are getting to know each other. Nothing important seems to be happening.</p>
+    <a href="{% url 'night_template' %}"> Go to Night </a>
+</body>
+</html>
