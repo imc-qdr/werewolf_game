@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>roles</title>
+</head>
+<body>
+
+    <form action="" name = "Roles" method="POST">
+    {% csrf_token %}
+    {% for player in players_li %}
+        <div>
+        <label for = "{{ player }}">{{ player }}</label>
+        <select name = {{ player }}>
+            <option value="Villager">Villager</option>
+            <option value="Werewolf">Werewolf</option>
+            <option value="WhiteWerewolf">White Werewolf</option>
+            <option value="Seer">Seer</option>
+            <option value="Hunter">Hunter</option>
+            <option value="Witch">Witch</option>
+        </select>
+        </div>
+    {% endfor %}
+    <button type='submit'> Assign Roles </button>
+    </form>
+
+    <a href="{% url 'day1' %}">Onto day 1</a>
+</body>
+</html>
