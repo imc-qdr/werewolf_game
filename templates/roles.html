@@ -5,12 +5,12 @@
 </head>
 <body>
 
-    <form action="" name = "Roles" method="POST">
+    <form id="roles_assignment" action="" name = "Roles" onsubmit="validateForm()">
     {% csrf_token %}
     {% for player in players_li %}
         <div>
         <label for = "{{ player }}">{{ player }}</label>
-        <select name = {{ player }}>
+        <select class="player" name = {{ player }}>
             <option value="Villager">Villager</option>
             <option value="Werewolf">Werewolf</option>
             <option value="WhiteWerewolf">White Werewolf</option>
@@ -23,6 +23,33 @@
     <button type='submit'> Assign Roles </button>
     </form>
 
-    <a href="{% url 'day1' %}">Onto day 1</a>
+    <script>
+        function validateForm()
+        {
+            var allPlayers = document.getElementsByClassName("player");
+            numOfWerewolves = 0;
+            numOfVillagers = 0;
+            for(var i = 0; i < allPlayers.length; i++)
+            {
+                if (allPlayers[i].value == "Werewolf") {
+                    numOfWerewolves = numOfWerewolves + 1;
+                } else if (allPlayers[i].value == "Villager") {
+                    numOfVillagers = numOfVillagers + 1;
+                }
+            }
+            if (numOfWerewolves < 1) {
+                alert("Not enough werewolves!");
+            } else if (numOfVillagers < 3) {
+                alert("Not enough villagers!");
+            } else {
+                document.getElementById('roles_assignment').setAttribute("method", "post");
+                alert("Roles assigned!")
+            }
+        }
+    
+    </script>
+    
+
+    <a id="to_day" href="{% url 'day1' %}">Onto day 1</a>
 </body>
 </html>

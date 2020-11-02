@@ -1,14 +1,60 @@
 body {
-    background-image: url('../media/img/pic5478856.png');
-    background-size: 100% 100%;
+    background: url(d4e5313d5dcd2d7c5c4f83fbdee7d49b.jpg) no-repeat center center fixed;
+    background-size: cover;
+}
+
+#container {
+    position: absolute;
+    top: 75px;
+    left: 50px;
+    background-color: burlywood;
+    padding: 25px;
+    border: 4px solid black;
+    border-radius: 5px;
+}
+
+#list {
+    overflow: auto;
+    margin-bottom: 45px;
+}
+
+.cross {
+    position: absolute;
+    right: 50px;
+    padding-top: 5px;
+}
+
+.player {
+    padding-top: 5px;
+    height: 30px;
+    margin-bottom: 10px;
+    border: 3px solid black;
+    border-radius: 5px;
+    text-align: center;
+    background-color: #f2cb3d;
+}
+
+#Create_Player {
+    height: 40px;
+    border: 3px solid black;
+    border-radius: 5px;
+
+}
+
+#Pname {
+    height: 30px;
 }
 
 .button {
-    width: 150px;
-    height: 35px;
-    position: absolute;
-    top: 50%;
-    left: 46%;
-    background-color: cornflowerblue;
+    display: block;
+    width: 115px;
+    height: 30px;
+    background: white;
+    padding: 10px;
+    text-align: center;
+    border: 3px solid black;
+    border-radius: 5px;
+    color: black;
     font-weight: bold;
+    line-height: 25px;
 }

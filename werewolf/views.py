@@ -37,7 +37,7 @@ class Witch(Player):
 
 # ---- ---- #
 
-players_li_names = ['ayy', 'lmaoo', 'topkek', '1', '2', '3']
+players_li_names = ['Player 1', 'Player 2', 'Player 3', 'Player 4', 'Player 5']
 players_li_obj = []
 
 

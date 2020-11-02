@@ -1,23 +1,38 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
 	<title></title>
+	<link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
+	<div id="container">
+		<form name = 'PlayerForm' action='' method='POST' onsubmit="validateForm()">
+			<div id="list">
+				{% csrf_token %}
 
-	<form name = 'PlayerForm' action='' method='POST' onsubmit="validateForm()">
-        {% csrf_token %}
+				{% for player in players_li_names %}
+					<div class="player"><b class="player_name"> {{ player }} </b> 
+						<img src="{% static 'remove_sign.png' %}" class="remove cross">
+					</div>
+				{% endfor %}
+			</div>
+			<input id="Pname" type="text" name="Pname">
+			<button type='submit' id = "Create_Player"><b> CREATE PLAYER </b></button>
+		</form>
 
-        {% for player in players_li_names %}
-            <div> {{ player }} </div>
-        {% endfor %}
+		{% if players_li_names|length > 5 %}
+			<a class="button" href="{% url 'roles' %}">Go to first night</a>
+		{% else %}
+			<b>We need 6 players at least in order to start!</b>
+		{% endif %}
+	</div>
+	
 
+	<script src="{% static 'events.js' %}">
+	</script>	
 
-     	<input type="text" name="Pname">
-		<button type='submit' id = "Create_Player"> CREATE PLAYER </button>
-	</form>
-
-	<a href="{% url 'roles' %}">Go to first night</a>
 
 <script>
 	function validateForm()

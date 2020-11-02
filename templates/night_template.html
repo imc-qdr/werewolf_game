@@ -20,11 +20,7 @@
       <button type='submit'>Kill</button>
     </form>
 
-    {% if humans_won == false %}
-        <a href="{% url 'day_template' %}">Go to Day</a>
-    {% else %}
-        <a href="{% url 'admin' %}">Go to Admin</a>
-    {% endif %}
+    <a href="{% url 'day_template' %}">Go to Day</a>
 
 </body>
 </html>
