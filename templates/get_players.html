@@ -18,12 +18,12 @@
 					</div>
 				{% endfor %}
 			</div>
-			<input id="Pname" type="text" name="Pname">
-			<button type='submit' id = "Create_Player"><b> CREATE PLAYER </b></button>
+			<input placeholder="Enter the name" id="Pname" type="text" name="Pname">
+			<button type='submit' id = "Create_Player"><b> ADD PLAYER </b></button>
 		</form>
 
 		{% if players_li_names|length > 5 %}
-			<a class="button" href="{% url 'roles' %}">Go to first night</a>
+			<a class="button" href="{% url 'roles' %}">NIGHT PHASE</a>
 		{% else %}
 			<b>We need 6 players at least in order to start!</b>
 		{% endif %}
