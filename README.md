@@ -1,1 +1,2 @@
-# werewolf_game
+# Werewolf Game
+## It is what it is...
