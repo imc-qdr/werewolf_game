@@ -4,7 +4,7 @@
 <html>
 <head>
 	<title></title>
-	<link rel="stylesheet" href="{% static 'style.css' %}">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
 	<div id="container">
@@ -14,23 +14,23 @@
 
 				{% for player in players_li_names %}
 					<div class="player"><b class="player_name"> {{ player }} </b> 
-						<img src="{% static 'remove_sign.png' %}" class="remove cross">
+						<img src="{% static 'media/img/remove_sign.png' %}" class="remove cross">
 					</div>
 				{% endfor %}
 			</div>
-			<input id="Pname" placeholder="Type the name" type="text" name="Pname">
+			<input id="Pname" type="text" name="Pname">
 			<button type='submit' id = "Create_Player"><b> CREATE PLAYER </b></button>
 		</form>
 
 		{% if players_li_names|length > 5 %}
-			<a class="button" href="{% url 'roles' %}">NIGHT PHASE</a>
+			<a class="button" href="{% url 'roles' %}">Go to first night</a>
 		{% else %}
 			<b>We need 6 players at least in order to start!</b>
 		{% endif %}
 	</div>
 	
 
-	<script src="{% static 'events.js' %}">
+	<script src="{% static 'js/events.js' %}">
 	</script>	
 
 
