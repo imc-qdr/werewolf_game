@@ -1,16 +1,20 @@
+{% load static %}
+
+
 <!DOCTYPE html>
 <html>
 <head>
-	<title>roles</title>
+    <title>ASSIGN THE ROLES</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<body>
+<body id="roles_bg">
 
     <form id="roles_assignment" action="" name = "Roles" onsubmit="validateForm()">
     {% csrf_token %}
     {% for player in players_li %}
-        <div>
-        <label for = "{{ player }}">{{ player }}</label>
-        <select class="player" name = {{ player }}>
+        <div style="overflow: auto;">
+        <label for = "{{ player }}" class="label">{{ player }}</label>
+        <select class="select-css" name = {{ player }}>
             <option value="Villager">Villager</option>
             <option value="Werewolf">Werewolf</option>
             <option value="WhiteWerewolf">White Werewolf</option>
@@ -20,13 +24,13 @@
         </select>
         </div>
     {% endfor %}
-    <button type='submit'> Assign Roles </button>
+    <button type='submit' class="night_btn"> ASSIGN ROLES </button>
     </form>
 
     <script>
         function validateForm()
         {
-            var allPlayers = document.getElementsByClassName("player");
+            var allPlayers = document.getElementsByClassName("select-css");
             numOfWerewolves = 0;
             numOfVillagers = 0;
             for(var i = 0; i < allPlayers.length; i++)
@@ -48,8 +52,11 @@
         }
     
     </script>
-    
 
-    <a id="to_day" href="{% url 'day1' %}">Onto day 1</a>
+    <center>
+        <form id="to_day" action="{% url 'day1' %}">
+            <input id type="submit" class="night_btn" value="START GAME" />
+        </form>
+    </center>
 </body>
 </html>
