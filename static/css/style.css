@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Atma&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Aref+Ruqaa&display=swap');
+
 body {
     background: url(d4e5313d5dcd2d7c5c4f83fbdee7d49b.jpg) no-repeat center center fixed;
     background-size: cover;
@@ -140,4 +143,33 @@ body {
     background-color: #6334e3;
     color: #c9f1fd;
     font-weight: bold;
+}
+
+#info {
+    font-family: 'Atma', cursive;
+    font-size: 20px;
+    margin-bottom: 25px;
+}
+
+#day_container {
+    overflow: auto;
+    background-color: #ffde97;
+    width: 35%;
+    height: 33%;
+    padding-left: 25px;
+    border: 4px solid black;
+    border-radius: 7px;
+    position: absolute;
+    left: 31%;
+    top: 40%;
+}
+
+#link_to_night {
+    float: right;
+    font-size: 20px;
+    font-family: 'Aref Ruqaa', serif;
+}
+
+#day_header {
+    font-family: 'Aref Ruqaa', serif;
 }

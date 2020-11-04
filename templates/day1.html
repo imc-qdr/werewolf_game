@@ -1,11 +1,21 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Day1</title>
+	<title>DAY 1</title>
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-
-	<p>It is the break of dawn. The Villgers are getting to know each other. Nothing important seems to be happening.</p>
-    <a href="{% url 'night_template' %}"> Go to Night </a>
+	<div id="day_container">
+		<h2 id="day_header">DAY 1</h2>
+		<p id="info">It is the break of dawn. The Villgers are getting to know each other. Nothing important seems to be happening.</p>
+		<!-- <a href="{% url 'night_template' %}" style="float: right;"> Go to Night Time </a> -->
+		<p id="link_to_night" style="margin-right: 40px;"><b> Go to Night Time </b> 
+			<a href="{% url 'night_template' %}">
+				<img alt="arrow" src="{% static 'media/img/right_arrow.png' %}" height="20" width="40">
+			</a>
+		</p>
+	</div>
 </body>
 </html>
