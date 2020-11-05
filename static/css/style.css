@@ -244,3 +244,13 @@ body {
     font-size: 22px;
     text-decoration: none;
 }
+
+#Kill_Player {
+    height: 40px;
+    width: 131px;
+    border: 3px solid black;
+    border-radius: 5px;
+    float: right; 
+    margin-right: 13%; 
+    width: 45%;
+}
