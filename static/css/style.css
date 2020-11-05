@@ -1,12 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Atma&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Aref+Ruqaa&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Aladin&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Allan&display=swap');
 
 body {
     background: url(d4e5313d5dcd2d7c5c4f83fbdee7d49b.jpg) no-repeat center center fixed;
     background-size: cover;
 }
 
-#roles_bg {
+#night_bg {
     background: url(../media/img/night.jpg) no-repeat center center fixed;
     background-size: cover;
 }
@@ -103,6 +105,7 @@ body {
     background-size: .65em auto, 100%;
     float: right;
 }
+
 .select-css::-ms-expand {
 	display: none;
 }
@@ -172,4 +175,72 @@ body {
 
 #day_header {
     font-family: 'Aref Ruqaa', serif;
+}
+
+.werewolf_img {
+    opacity: 0.5;
+}
+
+#players_container {
+    margin-left: 3%;
+    margin-top: 5%;
+}
+
+.werewolf_container {
+    float: left;
+    margin-right: 40px;
+}
+
+.werewolf_name {
+    color: #948dfd;
+    font-size: 22px;
+    text-align: center;
+    margin-top: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#werewolf_decision_form {
+    position: absolute;
+    top: 73%;
+    left: 75%;
+    width: 20%;
+    background-color: #2e1572;
+    color: #948dfd;
+    padding-top: 30px;
+    padding-left: 30px;
+    padding-bottom: 15px;
+    border: 4px solid #0844a4;
+    border-radius: 7px;
+
+}
+
+#player_select {
+    width:100%;
+    height:30px;
+    border:0px;
+    outline:none;
+}
+
+#label_txt {
+    font-family: 'Aladin', cursive;
+    display:inline-block; 
+    width: 110px;
+    font-size: 18px;
+}
+
+.selectWrapper{
+    width: 55%;
+    border-radius:36px;
+    display:inline-block;
+    overflow:hidden;
+    background:#cccccc;
+    border:1px solid #cccccc;
+  }
+
+#day_time_link {
+    font-family: 'Allan', cursive;
+    margin-left: 30%;
+    color: #6ae3cf;
+    font-size: 22px;
+    text-decoration: none;
 }
