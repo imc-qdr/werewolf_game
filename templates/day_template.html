@@ -1,28 +1,42 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Night Time</title>
+    <title>DAY X</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
+    <div id="players_container">
+        {% for person in all %}
+            <div class='player_container'>
+                {% if person.is_dead %}
+                    <img src="{% static 'media/img/villager-card-compressor_dead.jpg' %}" class="img_rounded">
+                {% else %}
+                    <img src="{% static 'media/img/villager-card-compressor.jpg' %}" class="img_rounded">
+                {% endif %}
+                <div class="villager_name">{{ person.name }} </div>
+            </div>
+        {% endfor %}
+    </div>
 
-	{% for person in all %}
-        <div><div>{{ person.name }}</div> <div>is dead {{ person.is_dead }}</div></div>
-    {% endfor %}
+    <div id="villager_decision_form">
+        <form action="" name = "Vote" method="POST">
+            {% csrf_token %}
+            <label for="vote" id="label_txt">Vote to burn at stake</label>
+            <div class="selectWrapper">
+                <select name="vote" id="player_select">
+                    {% for person in alive %}
+                            <option value="{{ person }}">{{ person.name }}</option>
+                    {% endfor %}
+                </select>
+            </div><br>
+            <button type='submit' id="Kill_Player"> Kill </button>
 
-  <form action="" name = "Vote" method="POST">
-      {% csrf_token %}
-      <label for="vote">Villagers chose to kill</label>
-      <select name="vote">
-          {% for person in alive %}
-                <option value="{{ person }}">{{ person.name }}</option>
-          {% endfor %}
-      </select>
-      <button type='submit'> Kill Player </button>
+        </form><br><br><br>
 
-  </form>
-
-  <a href="{% url 'night_template' %}">To night Time</a>
-
+        <a href="{% url 'night_template' %}" id="night_time_link">Go To night Time</a>
+    </div>
 
 
 

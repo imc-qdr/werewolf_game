@@ -9,11 +9,11 @@
 <body id="night_bg">
     <div id="players_container">
         {% for werewolf in werewolves %}
-            <div class='werewolf_container'>
+            <div class='player_container'>
                 {% if werewolf.is_dead %}
-                    <img class="werewolf_img" src="{% static 'media/img/werewolf_dead.png' %}">
+                    <img class="player_img" src="{% static 'media/img/werewolf_dead.png' %}">
                 {% else %}
-                    <img class="werewolf_img" src="{% static 'media/img/werewolf.png' %}">
+                    <img class="player_img" src="{% static 'media/img/werewolf.png' %}">
                 {% endif %}
                 <div class="werewolf_name">{{ werewolf.name }} </div>
             </div>
