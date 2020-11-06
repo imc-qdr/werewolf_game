@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 import re as regular
+import random
 
 # Abdul write your classes here.
 
@@ -39,14 +40,27 @@ class Witch(Player):
         self.healing_potion = healing_potion
 
 
+# ---- METHODS ---- #
+
+def killPlayer(PlayerObj):
+    PlayerObj.is_dead = True
+    if PlayerObj.is_lover == True:
+        amor_li.remove(PlayerObj)
+        amor_li[0].is_dead = True
+
+
 # ---- VARIABLES ---- #
 
-players_li_names = ['Vasilli', 'Abdul', 'Sophie', 'Teo', 'Dio', 'Jotaro']
+players_li_names = ['Vasilli', 'Abdul', 'topkek', 'ayylmao', 'shitboaye', 'henlosir']
 players_li_obj = []
-seer_person = None
-person_to_heal = None
-person_to_kill = None
-
+seer_person = None          # The person the seer chooses to see or the person who the sleepwalking villager chooses to see
+person_to_heal = None       # The person the witch heals
+person_to_kill = None       # The person the witch kills
+hunter_killed_at = None     # The time when the hunter was killed, during the night or after voting
+hunter_died = False         # The hunter died is declared so it doesn't loop it during the day
+white_werewolf_token = 0    # The token that decides whether to render witch(1) or white werewolf(2)
+sleepwalk_person = None     # The person that chooses which players role they're going to see
+amor_li = []
 
 # ---- RETURN TEMPLATES ----#
 
@@ -82,6 +96,8 @@ def getPlayers(req):
 # roles.html
 def assignRoles(req):
 
+    global amor_li
+
     if req.method == 'POST':
         print(req.POST)
         for name in players_li_names:
@@ -97,6 +113,16 @@ def assignRoles(req):
                 players_li_obj.append(Hunter(name))
             elif req.POST[name] == 'Witch':
                 players_li_obj.append(Witch(name))
+
+        if req.POST['amor']:
+            amors = req.POST.getlist('amor')
+            for amor in amors:
+                for person in players_li_obj:
+                    if amor == person.name:
+                        person.is_lover = True
+                        amor_li.append(person)
+
+
 
     context_dict = \
         {
@@ -138,7 +164,7 @@ def seer(req):
 
     return redirect('night_template')
 
-#seer1.html
+# seer1.html
 def seer1(req):
 
     role = str(seer_person)
@@ -150,37 +176,125 @@ def seer1(req):
         }
     return render(req, 'seer1.html', context_dict)
 
+# sleepwalking.html
+def sleepwalking(req):
+
+    global position_in_list, sleepwalk_person
+    alive = []
+    for person in players_li_obj:
+        if isinstance(person, Villager) == True and person.is_dead == False:
+            alive.append(person)
+
+    if req.method == 'POST':
+        answers = req.POST.getlist('Decide')
+        if len(set(answers)) == 1 and answers[0] == 'No':        # if all answers are the same 'No'
+            return redirect('night_template')
+        if len(set(answers)) == 1 and answers[1] == 'Yes':       # if all answers are the same 'Yes'
+            selected_person = random.choice(alive)
+            for person in players_li_obj:
+                if str(selected_person) == str(person):
+                    killPlayer(person)
+                    return redirect('night_template')
+        counter = 0
+        for element in answers:
+            if str(element) == 'Yes':
+                counter += 1
+                position_in_list = answers.index('Yes')
+
+        if counter == 1:
+            sleepwalk_person = alive[int(position_in_list)]
+            return redirect('sleepwalking1')
+        else:
+            return redirect('night_template')
+
+    context_dict = \
+        {
+            'alive' : alive
+        }
+
+    return render(req, 'sleepwalking.html', context_dict)
+
+# sleepwalking1.html
+def sleepwalking1(req):
+
+    global seer_person, sleepwalk_person
+    rest = []
+
+
+    for person in players_li_obj:
+        if person.is_dead == False:
+            rest.append(person)
+
+    rest.remove(sleepwalk_person)
+
+    if req.method == 'POST':
+        seer_person = req.POST['vote']
+        return redirect('sleepwalking2')
+
+    context_dict = \
+        {
+            'person' : sleepwalk_person,
+            'alive' : rest
+        }
+
+    return render(req, 'sleepwalking1.html', context_dict)
+
+# sleepwalking2.html
+def sleepwalking2(req):
+
+    global sleepwalk_person, seer_person
+
+    role = str(seer_person)
+    back = regular.findall(r"\w+", role)
+
+    context_dict = \
+        {
+            'villager' : sleepwalk_person,
+            'role' : back[2]
+        }
+
+    return render(req, 'sleepwalking2.html', context_dict)
+
 # night_template.html
 def night(req):
 
+    global white_werewolf_token
     werewolves = []
+    alive_werewolves = []
+
 
     for person in players_li_obj:
         werewolf = isinstance(person, Werewolf)
-        if werewolf == True:
+        white = isinstance(person, WhiteWerewolf)
+        if werewolf == True or white == True:
             werewolves.append(person)
-
-#    counter = 0
-#    for person in werewolves:
-#        if person.is_dead == True:
-#            counter += 1
-#    if counter == len(werewolves):
-#        return redirect('humans_win')
+        if (werewolf == True and person.is_dead == False) or (white == True and person.is_dead == False):
+            alive_werewolves.append(person)
 
     rest_li = list(filter(lambda x: x not in werewolves, players_li_obj))
     for person in rest_li:
         if person.is_dead == True:
             rest_li.remove(person)
 
+    if len(alive_werewolves) >= len(rest_li):
+        return redirect('werewolves_win')
+
+
     if req.method == 'POST':
         for element in players_li_obj:
             if str(element) == str(req.POST['vote']):
-                element.is_dead = True
+                killPlayer(element)
+
+        white_werewolf_token += 1
+        if white_werewolf_token == 3:
+            white_werewolf_token = 1
+
 
     context_dict = \
         {
             'werewolves' : werewolves,
             'rest' : rest_li,
+            'token' : white_werewolf_token
         }
 
     return render(req, 'night_template.html', context_dict)
@@ -207,7 +321,7 @@ def witch(req):
             witch.poison_potion = False
             for person in players_li_obj:
                 if str(person) == person_to_kill:
-                    person.is_dead = True
+                    killPlayer(person)
                     person_to_kill = None
 
     for person in players_li_obj:
@@ -236,6 +350,7 @@ def witch(req):
 #day_template.html
 def day(req):
 
+    global hunter_killed_at, hunter_died
     werewolves = []
     werewolves_left_li = []
     alive = []
@@ -250,10 +365,14 @@ def day(req):
     if req.method == 'POST':
         for element in players_li_obj:
             werewolf = isinstance(element, Werewolf)
-            if werewolf == True:
+            white = isinstance(element, WhiteWerewolf)
+            if werewolf == True or white == True:
                 werewolves_left_li.append(element)
             if str(element) == str(req.POST['vote']):
-                element.is_dead = True
+                killPlayer(element)
+                if isinstance(element, Hunter) == True:                        # If the villagers decide to kill the hunter
+                    hunter_killed_at = 'day'
+                    return redirect('hunter')
         for werewolf in werewolves_left_li:
             if werewolf.is_dead == True:
                 werewolves_left_li.remove(werewolf)
@@ -261,8 +380,16 @@ def day(req):
             return redirect('humans_win')
 
     for person in players_li_obj:
-        if isinstance(person, Werewolf):
+        if isinstance(person, Werewolf) or isinstance(person, WhiteWerewolf):
             werewolves.append(person)
+        if isinstance(person, Hunter) and person.is_dead == True:               # If hunter is dead before the morning starts
+            hunter_killed_at = 'night'
+            if hunter_died == True:
+                pass
+            else:
+                return redirect('hunter')
+
+    alive_no_werewolves = list(filter(lambda x: x not in werewolves, alive))
 
     for werewolf in werewolves:
         if werewolf.is_dead == True:
@@ -270,6 +397,8 @@ def day(req):
 
     if counter == len(werewolves):
         return redirect('humans_win')
+    elif len(werewolves) - counter >= len(alive_no_werewolves):
+        return redirect('werewolves_win')
 
 
     context_dict = \
@@ -280,6 +409,64 @@ def day(req):
 
     return render(req, 'day_template.html', context_dict)
 
-#humans_win.html
+# hunter.html
+def hunter(req):
+
+    global person_to_kill, hunter_died, hunter_killed_at
+    alive = []
+
+    for element in players_li_obj:
+        if element.is_dead:
+            pass
+        else:
+            alive.append(element)
+
+    if req.method == 'POST':
+        person_to_kill = req.POST['vote']
+        for person in alive:
+            if str(person) == person_to_kill:
+                killPlayer(person)
+                person_to_kill = None
+                hunter_died = True
+
+
+    context_dict = \
+    {
+        'alive' : alive,
+        'killed' : hunter_killed_at
+    }
+
+    return render(req, 'hunter.html', context_dict)
+
+# white_werewolf.html
+def whiteWerewolf(req):
+
+    global person_to_kill
+
+    werewolves = []
+    for person in players_li_obj:
+        if isinstance(person, Werewolf) and person.is_dead == False:
+            werewolves.append(person)
+
+
+    if req.method == 'POST':
+        person_to_kill = str(req.POST['vote'])
+        for person in players_li_obj:
+            if person_to_kill == str(person):
+                killPlayer(person)
+                person_to_kill = None
+
+    context_dict = \
+        {
+            'werewolves' : werewolves
+        }
+
+    return render(req, 'white_werewolf.html', context_dict)
+
+# humans_win.html
 def humans_win(req):
     return render(req, 'humans_win.html')
+
+# werewolves_win
+def werewolves_win(req):
+    return render(req, 'werewolves_win.html')
