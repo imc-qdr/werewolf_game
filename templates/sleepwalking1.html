@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sleepwalking</title>
+</head>
+<body>
+
+    <p>The villager {{ person.name }} starts to sleepwalk, and accidentaly reveals the role of </p>
+
+    <form action="" name = "Check" method="POST">
+      {% csrf_token %}
+      <select name="vote">
+          {% for person in alive %}
+                <option value="{{ person }}">{{ person.name }}</option>
+          {% endfor %}
+      </select>
+      <button type='submit'>Reveal</button>
+    </form>
+
+
+</body>
+</html>
