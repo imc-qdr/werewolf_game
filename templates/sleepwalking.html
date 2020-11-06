@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sleepwalking</title>
+</head>
+<body>
+
+    <p>The villagers decide whether they want to go sleepwalking: </p>
+    <form action="" name = "Check" method="POST">
+    {% csrf_token %}
+    {% for villager in alive %}
+        <div><p>{{ villager.name }} decides </p></div>
+        <select name = "Decide">
+            <option>No</option>
+            <option>Yes</option>
+        </select>
+    {% endfor %}
+    <button type='submit'>Decide</button>
+    </form>
+
+
+</body>
+</html>
