@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Seer</title>
+</head>
+<body>
+
+	<div><p>The seer {{ seer.name }} awakens, and decides to check the role of player </p></div>
+
+    <form action="" name = "Check" method="POST">
+      {% csrf_token %}
+      <select name="vote">
+          {% for rest in rest %}
+                <option value="{{ rest }}">{{ rest.name }}</option>
+          {% endfor %}
+      </select>
+      <button type='submit'>Decide</button>
+    </form>
+
+    <a href="{% url 'seer1' %}">Check</a>
+
+</body>
+</html>
