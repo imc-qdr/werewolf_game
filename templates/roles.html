@@ -13,7 +13,7 @@
     {% for player in players_li %}
         <div style="overflow: auto;">
         <label for = "{{ player }}" class="label">{{ player }}</label>
-        <select class="select-css" name = {{ player }}>
+        <select class="select-css" name = {{ player }}>   <!-- zrelo za rework -->
             <option value="Villager">Villager</option>
             <option value="Werewolf">Werewolf</option>
             <option value="WhiteWerewolf">White Werewolf</option>
@@ -23,6 +23,21 @@
         </select>
         </div>
     {% endfor %}
+
+    <div>
+        <select name="amor">
+            {% for player in players_li %}
+                <option>{{ player }}</option>
+            {% endfor %}
+        </select>
+    <div>Amor?</div>
+        <select name="amor">
+            {% for player in players_li %}
+                <option>{{ player }}</option>
+            {% endfor %}
+        </select>
+        </div>
+
     <button type='submit' class="night_btn"> ASSIGN ROLES </button>
     </form>
 
