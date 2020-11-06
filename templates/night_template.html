@@ -35,5 +35,14 @@
         </form><br><br><br>
         <a href="{% url 'day_template' %}" id="day_time_link">Go to Day Time</a>
     </div>
+    
+        <p>{{ token }}</p>
+
+    {% if token == 2 %}
+        <a href="{% url 'whiteWerewolf' %}">Go to Next</a>
+    {% else %}
+        <a href="{% url 'witch' %}">Go to Next</a>
+    {% endif %}
+    
 </body>
 </html>
