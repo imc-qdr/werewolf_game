@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Hunter</title>
+  </head>
+  <body>
+
+  <p>The Player with the role of Hunter has been killed. He can choose to kill the following Player.</p>
+      <form action="" name = "Check" method="POST">
+      {% csrf_token %}
+        <select name="vote">
+            {% for person in alive %}
+                    <option value="{{ person }}">{{ person.name }}</option>
+            {% endfor %}
+        </select>
+      <button type='submit'>Decide</button>
+      </form>
+
+
+      {% if killed == 'day' %}
+          <a href="{% url 'seer' %}"> Go to Night Time </a>
+      {% elif killed == 'night' %}
+          <a href="{% url 'day_template' %}"> Go to Day Time </a>
+      {% elif killed == None %}
+          <p>Error</p>
+
+      {% endif %}
+
+
+  </body>
+</html>
