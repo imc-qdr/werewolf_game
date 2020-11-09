@@ -114,13 +114,14 @@ def assignRoles(req):
             elif req.POST[name] == 'Witch':
                 players_li_obj.append(Witch(name))
 
-        if req.POST['amor']:
-            amors = req.POST.getlist('amor')
-            for amor in amors:
-                for person in players_li_obj:
-                    if amor == person.name:
-                        person.is_lover = True
-                        amor_li.append(person)
+        if 'amor' in req.POST:
+            if req.POST['amor']:
+                amors = req.POST.getlist('amor')
+                for amor in amors:
+                    for person in players_li_obj:
+                        if amor == person.name:
+                            person.is_lover = True
+                            amor_li.append(person)
 
 
 

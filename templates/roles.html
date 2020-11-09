@@ -6,7 +6,7 @@
     <title>ASSIGN THE ROLES</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<body id="night_bg">
+<body id="night_bg" onload="select_another();">
 
     <form id="roles_assignment" action="" name = "Roles" onsubmit="validateForm()">
     {% csrf_token %}
@@ -23,21 +23,24 @@
         </select>
         </div>
     {% endfor %}
+    <br><br>
+    <input type="checkbox" id="lovers" name="lovers" value="lovers" onclick="toggle_amors();">
+    <label for="lovers" id="amor_label"> GONNA HAVE LOVERS?</label>
 
-    <div id="amor_container">
-        <select class="select-css" name="amor">
+    <div id="amor_container" hidden>
+        <select class="select-css" onchange="amor_select()" id="amor_select_id">
             {% for player in players_li %}
-                <option>{{ player }}</option>
+                <option value="{{player}}">{{ player }}</option>
             {% endfor %}
         </select>
     <div id="amor_txt">AMOR?</div>
-        <select class="select-css" name="amor">
+        <select class="select-css" onchange="amor_select_second()" id="second_amor_select">
             {% for player in players_li %}
-                <option>{{ player }}</option>
+                <option value="{{player}}">{{ player }}</option>
             {% endfor %}
         </select>
         </div>
-
+        <br>
     <button type='submit' class="night_btn"> ASSIGN ROLES </button>
     </form>
 
@@ -63,6 +66,44 @@
                 document.getElementById('roles_assignment').setAttribute("method", "post");
                 alert("Roles assigned!")
             }
+        }
+
+        function toggle_amors() {
+            if (document.getElementById("lovers").checked) {
+                document.getElementById("amor_container").hidden = false;
+                document.getElementById("amor_select_id").setAttribute("name", "amor")
+                document.getElementById("second_amor_select").setAttribute("name", "amor")
+            } else {
+                document.getElementById("amor_container").hidden = true;
+                document.getElementById("amor_select_id").removeAttribute("name");
+                document.getElementById("second_amor_select").removeAttribute("name")
+            }
+        }
+
+        var secondOldSelection = null;
+        function amor_select() {
+            if (secondOldSelection != null) {
+                document.querySelector('#second_amor_select option[value=' + secondOldSelection + ']').disabled = false;
+            }
+            var valOfAmor = document.getElementById("amor_select_id").value;
+            document.querySelector('#second_amor_select option[value=' + valOfAmor + ']').disabled = true;
+            secondOldSelection = valOfAmor;
+        }
+
+        var firstOldSelection = null;
+        function amor_select_second() {
+            if (firstOldSelection != null) {
+                document.querySelector('#amor_select_id option[value=' + firstOldSelection + ']').disabled = false;
+            }
+            var valOfAmor = document.getElementById("second_amor_select").value;
+            document.querySelector('#amor_select_id option[value=' + valOfAmor + ']').disabled = true;
+            firstOldSelection = valOfAmor;
+        }
+
+        function select_another() {
+            document.getElementById('second_amor_select').options[1].selected = 'selected';
+            amor_select();
+            amor_select_second();
         }
     
     </script>
