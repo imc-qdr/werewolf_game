@@ -1,22 +1,25 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
 	<title>Sleepwalking</title>
 </head>
-<body>
+<body id="night_bg">
+  <div id="special_decision_form" style="top: 20%;">
 
-    <p>The villager {{ person.name }} starts to sleepwalk, and accidentaly reveals the role of </p>
+    <div><p id="label_txt">The villager {{ person.name }} starts to sleepwalk, and accidentaly reveals the role of: </p></div>
 
     <form action="" name = "Check" method="POST">
       {% csrf_token %}
-      <select name="vote">
+      <select name="vote" class="select-css">
           {% for person in alive %}
                 <option value="{{ person }}">{{ person.name }}</option>
           {% endfor %}
-      </select>
-      <button type='submit'>Reveal</button>
+      </select><br><br><br><br>
+      <center><button type='submit' id="Sleepwalk_Decide_btn">Reveal</button></center>
     </form>
-
-
+  </div>
 </body>
 </html>

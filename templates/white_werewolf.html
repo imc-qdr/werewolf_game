@@ -1,24 +1,28 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <meta charset="utf-8">
     <title>white werewolf</title>
   </head>
-  <body>
-        <p>The White Werewolf awakens, and chooses one of the werewolves to kill</p>
+  <body id="night_bg">
+      <div id="special_decision_form">
+        <div><p id="label_txt">The White Werewolf awakens, and chooses one of the werewolves to kill</p></div>
 
         <form action="" name = "Check" method="POST">
           {% csrf_token %}
-          <select name="vote">
+          <select name="vote" class="select-css">
               {% for person in werewolves %}
                     <option value="{{ person }}">{{ person.name }}</option>
               {% endfor %}
           </select>
-          <button type='submit'>Decide</button>
+          <button type='submit' id="Decide_btn">Decide</button>
         </form>
+        <br>
+        <a href="{% url 'witch' %}" id="check_link">Check</a>
 
-        <a href="{% url 'witch' %}">Check</a>
-
-
+      </div>
   </body>
 </html>

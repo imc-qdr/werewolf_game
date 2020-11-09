@@ -1,32 +1,36 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <meta charset="utf-8">
     <title>Hunter</title>
   </head>
   <body>
+    <div id="hunter_decision">
 
-  <p>The Player with the role of Hunter has been killed. He can choose to kill the following Player.</p>
+      <p>The Player with the role of Hunter has been killed.<br>He can choose to kill the following Player.</p>
       <form action="" name = "Check" method="POST">
       {% csrf_token %}
-        <select name="vote">
+        <select name="vote" class="select-css">
             {% for person in alive %}
                     <option value="{{ person }}">{{ person.name }}</option>
             {% endfor %}
         </select>
-      <button type='submit'>Decide</button>
+      <button type='submit' id="Decide_btn">Decide</button>
       </form>
 
-
+      <br>
       {% if killed == 'day' %}
           <a href="{% url 'seer' %}"> Go to Night Time </a>
       {% elif killed == 'night' %}
-          <a href="{% url 'day_template' %}"> Go to Day Time </a>
+          <a href="{% url 'day_template' %}" id="day_time_link_from_hunter"> Continue </a>
       {% elif killed == None %}
           <p>Error</p>
 
       {% endif %}
 
-
+    </div>
   </body>
 </html>

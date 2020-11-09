@@ -1,32 +1,48 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 	<title>Night Time</title>
 </head>
 
 
-	{% for werewolf in werewolves %}
-        <div><div>{{ werewolf.name }} </div> <div>is dead {{ werewolf.is_dead }}</div></div>
-    {% endfor %}
+<body id="night_bg">
+    <div id="players_container">
+        {% for werewolf in werewolves %}
+            <div class='player_container'>
+                {% if werewolf.is_dead %}
+                    <img class="player_img" src="{% static 'media/img/werewolf_dead.png' %}">
+                {% else %}
+                    <img class="player_img" src="{% static 'media/img/werewolf.png' %}">
+                {% endif %}
+                <div class="werewolf_name">{{ werewolf.name }} </div>
+            </div>
+        {% endfor %}
+    </div>
 
-  <form action="" name = "Vote" method="POST">
-      {% csrf_token %}
-      <label for="vote">Werewolves decided to kill</label>
-      <select name="vote">
-          {% for rest in rest %}
-                <option value="{{ rest }}">{{ rest.name }}</option>
-          {% endfor %}
-      </select>
-      <button type='submit'>Kill</button>
-    </form>
+    <div id="werewolf_decision_form">
+        <form action="" name = "Vote" method="POST">
+        {% csrf_token %}
+        <label for="vote" id="label_txt">Werewolves decided to kill</label>
+        <div class="selectWrapper">
+            <select name="vote" id="player_select">
+                {% for rest in rest %}
+                        <option value="{{ rest }}">{{ rest.name }}</option>
+                {% endfor %}
+            </select>
+        </div><br>
+        <button type='submit' id="Kill_Player">Kill</button>
+        </form><br><br><br>
 
-    <p>{{ token }}</p>
+        {% if token == 2 %}
+        <a href="{% url 'whiteWerewolf' %}" id="day_time_link">Go to Day Time</a>
+        {% else %}
+        <a href="{% url 'witch' %}" id="day_time_link">Go to Day Time</a>
+        {% endif %}
 
-    {% if token == 2 %}
-        <a href="{% url 'whiteWerewolf' %}">Go to Next</a>
-    {% else %}
-        <a href="{% url 'witch' %}">Go to Next</a>
-    {% endif %}
+    </div>
 
 </body>
 </html>

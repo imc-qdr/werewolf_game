@@ -1,23 +1,26 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
 	<title>Seer</title>
 </head>
-<body>
+<body id="night_bg">
+  <div id="special_decision_form">
+    <div><p id="label_txt">The seer {{ seer.name }} awakens, and decides to check the role of player : </p></div>
 
-	<div><p>The seer {{ seer.name }} awakens, and decides to check the role of player </p></div>
-
-    <form action="" name = "Check" method="POST">
-      {% csrf_token %}
-      <select name="vote">
-          {% for rest in rest %}
-                <option value="{{ rest }}">{{ rest.name }}</option>
-          {% endfor %}
-      </select>
-      <button type='submit'>Decide</button>
-    </form>
-
-    <a href="{% url 'seer1' %}">Check</a>
-
+      <form action="" name = "Check" method="POST">
+        {% csrf_token %}
+        <select name="vote" class="select-css">
+            {% for rest in rest %}
+                  <option value="{{ rest }}">{{ rest.name }}</option>
+            {% endfor %}
+        </select>
+        <button type='submit' id="Decide_btn">Decide</button>
+      </form>
+      <br>
+      <a href="{% url 'seer1' %}" id="check_link">Check</a>
+  </div>
 </body>
 </html>

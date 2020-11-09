@@ -1,11 +1,16 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Sleepwalking3</title>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<title>Sleepwalking...</title>
 </head>
-<body>
+<body id="night_bg">
+        <div id="special_decision_form" style="top: 20%;">
 
-        <p>The villager {{ villager.name }} sees that the role of the chosen player is {{ role }}</p>
-        <a href="{% url 'night_template' %}">Further</a>
+                <div><p id="label_txt">The villager {{ villager.name }} sees that the role of the chosen player is <b>{{ role }}</b></p></div>
+                <a href="{% url 'night_template' %}" id="further_link">Further</a>
+        </div>
 </body>
 </html>

@@ -1,42 +1,45 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
 	<title>Witch</title>
 </head>
-<body>
-
-    <div><p>The witch {{ witch.name }} awakens, and thinks what to do ... </p></div>
-
-
-    {% if witch.healing_potion == True  %}
-    <form action="" name = "Heal" method="POST">
-      {% csrf_token %}
-      <label for="healing">Use potion of healing on player </label>
-      <select name="healing">
-          {% for person in all %}
-                <option value="{{ person }}">{{ person.name }}</option>
-          {% endfor %}
-      </select>
-      <button type='submit'>Use healing potion</button>
-    </form>
-    {% endif %}
+<body id="night_bg">
+    <div id="special_decision_form" style="top: 10%;">
+      <div><p id="label_txt">The witch {{ witch.name }} awakens, and thinks what to do ... </p></div>
 
 
-    {% if witch.poison_potion == True %}
-    <form action="" name = "Kill" method="POST">
-      {% csrf_token %}
-      <label for="kill">Use potion to kill player </label>
-      <select name="kill">
-          {% for person in rest %}
-                <option value="{{ person }}">{{ person.name }}</option>
-          {% endfor %}
-      </select>
-      <button type='submit'>Use potion of death</button>
-    </form>
-    {% endif %}
-	
-	
-    <a href="{% url 'day_template' %}">Go to Day</a>
+      {% if witch.healing_potion == True  %}
+      <form action="" name = "Heal" method="POST">
+        {% csrf_token %}
+        <label for="healing">Use <b>potion of healing</b> on player: </label>
+        <select name="healing" class="select-css" style="margin-top: 5%; margin-bottom: 5%;">
+            {% for person in all %}
+                  <option value="{{ person }}">{{ person.name }}</option>
+            {% endfor %}
+        </select><br>
+        <button type='submit' id="Witch_Decide_btn">Use healing potion</button>
+      </form>
+      {% endif %}
 
+
+      {% if witch.poison_potion == True %}
+      <form action="" name = "Kill" method="POST">
+        {% csrf_token %}
+        <label for="kill">Use <b>potion to kill</b> player: </label><br>
+        <select name="kill" class="select-css" style="margin-top: 5%; margin-bottom: 5%;">
+            {% for person in rest %}
+                  <option value="{{ person }}">{{ person.name }}</option>
+            {% endfor %}
+        </select><br>
+        <button type='submit' id="Witch_Decide_btn">Use potion of death</button>
+      </form>
+      {% endif %}
+    
+      <br>
+      <a href="{% url 'day_template' %}" id="further_link">Go to Day</a>
+    </div>
 </body>
 </html>
