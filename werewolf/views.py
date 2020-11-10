@@ -143,6 +143,7 @@ def assignRoles(req):
 def day1(req):
     return render(req, 'day1.html')
 
+
 # seer.html
 def seer(req):
 
@@ -170,7 +171,7 @@ def seer(req):
             }
             return render(req, 'seer.html', context_dict)
 
-    return redirect('night_template')
+    return redirect('sleepwalking')
 
 # seer1.html
 def seer1(req):
@@ -197,12 +198,15 @@ def sleepwalking(req):
         answers = req.POST.getlist('Decide')
         if len(set(answers)) == 1 and answers[0] == 'No':        # if all answers are the same 'No'
             return redirect('night_template')
-        if len(set(answers)) == 1 and answers[0] == 'Yes':       # if all answers are the same 'Yes'
-            selected_person = random.choice(alive)
-            for person in players_li_obj:
-                if str(selected_person) == str(person):
-                    killPlayer(person)
-                    return redirect('night_template')
+        if len(answers) == 1 and answers[0] == 'Yes':
+            return redirect('night_template')
+        else:
+            if len(set(answers)) == 1 and answers[0] == 'Yes':       # if all answers are the same 'Yes'
+                selected_person = random.choice(alive)
+                for person in players_li_obj:
+                    if str(selected_person) == str(person):
+                        killPlayer(person)
+                        return redirect('night_template')
         counter = 0
         for element in answers:
             if str(element) == 'Yes':
@@ -269,6 +273,7 @@ def night(req):
     global white_werewolf_token
     werewolves = []
     alive_werewolves = []
+    white_werewolf = None
 
 
     for person in players_li_obj:
@@ -278,6 +283,8 @@ def night(req):
             werewolves.append(person)
         if (werewolf == True and person.is_dead == False) or (white == True and person.is_dead == False):
             alive_werewolves.append(person)
+        if white == True:
+            white_werewolf = person
 
     rest_li = list(filter(lambda x: x not in werewolves, players_li_obj))
     for person in rest_li:
@@ -292,10 +299,13 @@ def night(req):
         for element in players_li_obj:
             if str(element) == str(req.POST['vote']):
                 killPlayer(element)
-
-        white_werewolf_token += 1
-        if white_werewolf_token == 3:
-            white_werewolf_token = 1
+        print(white_werewolf)
+        if white_werewolf == None:
+            pass
+        else:
+            white_werewolf_token += 1
+            if white_werewolf_token == 3:
+                white_werewolf_token = 1
 
 
     context_dict = \
@@ -313,16 +323,20 @@ def witch(req):
     global person_to_heal, person_to_kill, witch
     rest = []
 
+
+
     if req.method == 'POST':
         word = str(req.POST)
 
         if 'kill' not in word:
             person_to_heal = req.POST['healing']
             witch.healing_potion = False
-            for person in rest:
+            for person in players_li_obj:
                 if str(person) == person_to_heal:
                     person.is_dead = False
                     person_to_heal = None
+                    print(person, person.is_dead)
+
 
         else:
             person_to_kill = req.POST['kill']
@@ -455,6 +469,9 @@ def whiteWerewolf(req):
     for person in players_li_obj:
         if isinstance(person, Werewolf) and person.is_dead == False:
             werewolves.append(person)
+
+    if isinstance(werewolves[0], WhiteWerewolf):
+        return redirect('witch')
 
 
     if req.method == 'POST':
