@@ -68,6 +68,10 @@ amor_li = []
 def getPlayers(req):
     global players_li_names
     if req.method == 'POST':
+        
+        if 'p_to_remove' in req.POST:
+            print('got a player to remove ', req.POST['p_to_remove'])
+            players_li_names.remove(str(req.POST['p_to_remove']))
 
         if str(req.POST['Pname']) == '':
             print('cannot make a Player with no name')

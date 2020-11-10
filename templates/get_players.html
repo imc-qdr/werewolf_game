@@ -8,20 +8,22 @@
 </head>
 <body>
 	<div id="container">
-		<form name = 'PlayerForm' action='' method='POST' onsubmit="validateForm()">
+		<form name = 'PlayerForm' action='' method='POST'>
 			<div id="list">
 				{% csrf_token %}
 
 				{% for player in players_li_names %}
 					<div class="player_inf"><b class="player_name"> {{ player }} </b> 
-						<img src="{% static 'media/img/remove_sign.png' %}" class="remove cross">
+						<button type="submit" class="cross" name="p_to_remove" value="{{player}}">
+							<img src="{% static 'media/img/remove_sign.png' %}">
+						</button>
 					</div>
 				{% endfor %}
 			</div>
 			<input placeholder="Enter the name" id="Pname" type="text" name="Pname">
-			<button type='submit' id = "Create_Player"><b> ADD PLAYER </b></button>
+			<button type='submit' id = "Create_Player" onclick="validateForm()"><b> ADD PLAYER </b></button>
 		</form>
-
+		<br>
 		{% if players_li_names|length > 5 %}
 			<a class="button" href="{% url 'roles' %}">NIGHT PHASE</a>
 		{% else %}
