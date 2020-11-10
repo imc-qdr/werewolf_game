@@ -194,7 +194,7 @@ def sleepwalking(req):
         answers = req.POST.getlist('Decide')
         if len(set(answers)) == 1 and answers[0] == 'No':        # if all answers are the same 'No'
             return redirect('night_template')
-        if len(set(answers)) == 1 and answers[1] == 'Yes':       # if all answers are the same 'Yes'
+        if len(set(answers)) == 1 and answers[0] == 'Yes':       # if all answers are the same 'Yes'
             selected_person = random.choice(alive)
             for person in players_li_obj:
                 if str(selected_person) == str(person):
