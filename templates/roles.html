@@ -8,12 +8,12 @@
 </head>
 <body id="night_bg" onload="select_another();">
 
-    <form id="roles_assignment" action="" name = "Roles" onsubmit="validateForm()">
+    <form id="roles_assignment" action="">
     {% csrf_token %}
     {% for player in players_li %}
         <div style="overflow: auto;">
         <label for = "{{ player }}" class="label">{{ player }}</label>
-        <select class="select-css" style="float: right;" name = {{ player }}>   <!-- zrelo za rework -->
+        <select class="select-css role" style="float: right;" name = "{{ player }}">   <!-- zrelo za rework -->
             <option value="Villager">Villager</option>
             <option value="Werewolf">Werewolf</option>
             <option value="WhiteWerewolf">White Werewolf</option>
@@ -41,20 +41,20 @@
         </select>
         </div>
         <br>
-    <button type='submit' class="night_btn"> ASSIGN ROLES </button>
+    <button type="button" class="night_btn" onclick="validateForm()"> ASSIGN ROLES </button>
     </form>
 
     <script>
         function validateForm()
         {
-            var allPlayers = document.getElementsByClassName("select-css");
+            var allPlayers = document.getElementsByClassName("role");
             numOfWerewolves = 0;
             numOfVillagers = 0;
             for(var i = 0; i < allPlayers.length; i++)
             {
                 if (allPlayers[i].value == "Werewolf") {
                     numOfWerewolves = numOfWerewolves + 1;
-                } else if (allPlayers[i].value == "Villager") {
+                } else {
                     numOfVillagers = numOfVillagers + 1;
                 }
             }
@@ -62,21 +62,24 @@
                 alert("Not enough werewolves!");
             } else if (numOfVillagers < 3) {
                 alert("Not enough villagers!");
+            } else if (numOfVillagers <= numOfWerewolves) {
+                alert("There should be more non-werewolves than werewolves to play the game!");
             } else {
-                document.getElementById('roles_assignment').setAttribute("method", "post");
-                alert("Roles assigned!")
+                document.getElementById('roles_assignment').setAttribute("method", "POST");
+                alert("Roles assigned!");
+                document.getElementById("roles_assignment").submit();
             }
         }
 
         function toggle_amors() {
             if (document.getElementById("lovers").checked) {
                 document.getElementById("amor_container").hidden = false;
-                document.getElementById("amor_select_id").setAttribute("name", "amor")
-                document.getElementById("second_amor_select").setAttribute("name", "amor")
+                document.getElementById("amor_select_id").setAttribute("name", "amor");
+                document.getElementById("second_amor_select").setAttribute("name", "amor");
             } else {
                 document.getElementById("amor_container").hidden = true;
                 document.getElementById("amor_select_id").removeAttribute("name");
-                document.getElementById("second_amor_select").removeAttribute("name")
+                document.getElementById("second_amor_select").removeAttribute("name");
             }
         }
 
@@ -110,7 +113,9 @@
 
     <center>
         <form id="to_day" action="{% url 'day1' %}">
-            <input id type="submit" class="night_btn" value="START GAME" />
+            {% if isReadyToStart %}
+                <input id type="submit" class="night_btn" value="START GAME" />
+            {% endif %}
         </form>
     </center>
 </body>
