@@ -61,6 +61,7 @@ hunter_died = False         # The hunter died is declared so it doesn't loop it 
 white_werewolf_token = 0    # The token that decides whether to render witch(1) or white werewolf(2)
 sleepwalk_person = None     # The person that chooses which players role they're going to see
 amor_li = []
+isReadyToStart = False
 
 # ---- RETURN TEMPLATES ----#
 
@@ -101,9 +102,10 @@ def getPlayers(req):
 def assignRoles(req):
 
     global amor_li
-
+    global isReadyToStart
     if req.method == 'POST':
         print(req.POST)
+        isReadyToStart = True
         for name in players_li_names:
             if req.POST[name] == 'Villager':
                 players_li_obj.append(Villager(name))
@@ -131,7 +133,8 @@ def assignRoles(req):
 
     context_dict = \
         {
-            'players_li' : players_li_names
+            'players_li' : players_li_names,
+            'isReadyToStart' : isReadyToStart
         }
 
     return render(req, 'roles.html', context_dict)

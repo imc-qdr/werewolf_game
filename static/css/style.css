@@ -217,6 +217,7 @@ p {
 }
 
 .villager_name {
+    overflow: auto;
     color: black;
     background-color: rgba(214, 130, 39, 0.7);
     font-size: 22px;
@@ -267,7 +268,7 @@ p {
     position: absolute;
     top: 35%;
     left: 38%;
-    width: 21%;
+    width: 350px;
     background-color: #2e1572;
     color: #948dfd;
     padding-top: 15px;
@@ -455,5 +456,10 @@ p {
 
 #werewolves_bg {
     background: url(../media/img/werewolves_win.PNG) no-repeat center center fixed;
+    background-size: 100% 100%;
+}
+
+#start_bg {
+    background: url(../media/img/pic5478856.png) no-repeat center center fixed;
     background-size: 100% 100%;
 }
