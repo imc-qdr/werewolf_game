@@ -300,7 +300,7 @@ def night(req):
             if str(element) == str(req.POST['vote']):
                 killPlayer(element)
         print(white_werewolf)
-        if white_werewolf == None:
+        if white_werewolf == None or white_werewolf.is_dead == True:
             pass
         else:
             white_werewolf_token += 1

@@ -7,42 +7,44 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body id="night_bg" onload="select_another();">
+    {% if isReadyToStart is False %}
+        <form id="roles_assignment" action="">
+        {% csrf_token %}
+        {% for player in players_li %}
+            <div style="overflow: auto;">
+            <label for = "{{ player }}" class="label">{{ player }}</label>
+            <select class="select-css role" style="float: right;" name = "{{ player }}">   <!-- zrelo za rework -->
+                <option value="Villager">Villager</option>
+                <option value="Werewolf">Werewolf</option>
+                <option value="WhiteWerewolf">White Werewolf</option>
+                <option value="Seer">Seer</option>
+                <option value="Hunter">Hunter</option>
+                <option value="Witch">Witch</option>
+            </select>
+            </div>
+        {% endfor %}
+        <br><br>
+        <input type="checkbox" id="lovers" name="lovers" value="lovers" onclick="toggle_amors();">
+        <label for="lovers" id="amor_label"> GONNA HAVE LOVERS?</label>
 
-    <form id="roles_assignment" action="">
-    {% csrf_token %}
-    {% for player in players_li %}
-        <div style="overflow: auto;">
-        <label for = "{{ player }}" class="label">{{ player }}</label>
-        <select class="select-css role" style="float: right;" name = "{{ player }}">   <!-- zrelo za rework -->
-            <option value="Villager">Villager</option>
-            <option value="Werewolf">Werewolf</option>
-            <option value="WhiteWerewolf">White Werewolf</option>
-            <option value="Seer">Seer</option>
-            <option value="Hunter">Hunter</option>
-            <option value="Witch">Witch</option>
-        </select>
-        </div>
-    {% endfor %}
-    <br><br>
-    <input type="checkbox" id="lovers" name="lovers" value="lovers" onclick="toggle_amors();">
-    <label for="lovers" id="amor_label"> GONNA HAVE LOVERS?</label>
+        <div id="amor_container" hidden>
+            <select class="select-css" onchange="amor_select()" id="amor_select_id">
+                {% for player in players_li %}
+                    <option value="{{player}}">{{ player }}</option>
+                {% endfor %}
+            </select>
+        <div id="amor_txt">AMOR?</div>
+            <select class="select-css" onchange="amor_select_second()" id="second_amor_select">
+                {% for player in players_li %}
+                    <option value="{{player}}">{{ player }}</option>
+                {% endfor %}
+            </select>
+            </div>
+            <br>
+            <button type="button" class="night_btn" onclick="validateForm()"> ASSIGN ROLES </button>
+        </form>
+    {% endif %}
 
-    <div id="amor_container" hidden>
-        <select class="select-css" onchange="amor_select()" id="amor_select_id">
-            {% for player in players_li %}
-                <option value="{{player}}">{{ player }}</option>
-            {% endfor %}
-        </select>
-    <div id="amor_txt">AMOR?</div>
-        <select class="select-css" onchange="amor_select_second()" id="second_amor_select">
-            {% for player in players_li %}
-                <option value="{{player}}">{{ player }}</option>
-            {% endfor %}
-        </select>
-        </div>
-        <br>
-    <button type="button" class="night_btn" onclick="validateForm()"> ASSIGN ROLES </button>
-    </form>
 
     <script>
         function validateForm()
@@ -114,7 +116,7 @@
     <center>
         <form id="to_day" action="{% url 'day1' %}">
             {% if isReadyToStart %}
-                <input id type="submit" class="night_btn" value="START GAME" />
+                <input style="margin-top: 15%;" id type="submit" class="night_btn" value="START GAME" />
             {% endif %}
         </form>
     </center>
