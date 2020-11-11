@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 import re as regular
 import random
@@ -7,6 +8,9 @@ import random
 # ---- CLASSES ---- #
 
 class Player:
+    """
+    main superclass that other roles inherit
+    """
     def __init__(self, name, is_dead, is_lover):
         self.is_dead = is_dead
         self.name = name
@@ -51,7 +55,7 @@ def killPlayer(PlayerObj):
 
 # ---- VARIABLES ---- #
 
-players_li_names = ['Vasilli', 'Abdul', 'topkek', 'ayylmao', 'shitboaye', 'henlosir']
+players_li_names =  ["By", "Vassili", "Filip", "Abdulkader"]
 players_li_obj = []
 seer_person = None          # The person the seer chooses to see or the person who the sleepwalking villager chooses to see
 person_to_heal = None       # The person the witch heals
@@ -70,8 +74,12 @@ def index(req):
     return render(req, 'index.html') 
 
 
-# get_players.html
+# renders get_players.html template
 def getPlayers(req):
+    """
+    gets players name and appends them to players_li_names and renders them back
+    in the template
+    """
     global players_li_names
     if req.method == 'POST':
         
@@ -79,9 +87,10 @@ def getPlayers(req):
             print('got a player to remove ', req.POST['p_to_remove'])
             players_li_names.remove(str(req.POST['p_to_remove']))
 
-        if str(req.POST['Pname']) == '':
-            print('cannot make a Player with no name')
-            pass
+        # if the player name is empty return 204 status code. in front end there is a restriction
+        # but for more safety we put also in the back end to prevent server crashing
+        if not req.POST.get('Pname', False):
+            return HttpResponse(status=204)
 
         elif (len(players_li_names) >= 20):
             print('cannot add more players')
@@ -103,9 +112,12 @@ def getPlayers(req):
 
     return render(req, 'get_players.html', context_dict)
 
-# roles.html
+# renders roles.html template
 def assignRoles(req):
-
+    """
+    renders the names in player_li_names to the template and assign
+    them roles based on conditionals.
+    """
     global amor_li
     global isReadyToStart
     if req.method == 'POST':
@@ -144,14 +156,17 @@ def assignRoles(req):
 
     return render(req, 'roles.html', context_dict)
 
-# day1.html
+# renders day1.html template
 def day1(req):
     return render(req, 'day1.html')
 
 
-# seer.html
+# renders seer.html template
 def seer(req):
-
+    """
+    if the seer is not dead, renders the template to allow the seer to discover the role
+    if the seer is dead or not assigned, redirect to sleepwalking phase
+    """
     global seer_person
     rest = []
 
@@ -180,7 +195,10 @@ def seer(req):
 
 # seer1.html
 def seer1(req):
-
+    """
+    renders the template to show the identity of the player
+    chosen by the seer
+    """
     role = str(seer_person)
     back = regular.findall(r"\w+", role)
 
@@ -192,7 +210,11 @@ def seer1(req):
 
 # sleepwalking.html
 def sleepwalking(req):
-
+    """
+    renders sleep walking template to allow players to decide whether
+    they will go sleep walking. if all decided to sleep walk, kill a random player
+    if one only decide, give him an ability to be seer for one round.
+    """
     global position_in_list, sleepwalk_person
     alive = []
     for person in players_li_obj:
@@ -233,7 +255,10 @@ def sleepwalking(req):
 
 # sleepwalking1.html
 def sleepwalking1(req):
-
+    """
+    renders the template for the sleepwalking player
+    to choose a player to reveal his identity.
+    """
     global seer_person, sleepwalk_person
     rest = []
 
@@ -258,7 +283,10 @@ def sleepwalking1(req):
 
 # sleepwalking2.html
 def sleepwalking2(req):
-
+    """
+    renders the template the show the identity of the player
+    that was chosen by the sleepwalking player
+    """
     global sleepwalk_person, seer_person
 
     role = str(seer_person)
@@ -274,7 +302,12 @@ def sleepwalking2(req):
 
 # night_template.html
 def night(req):
-
+    """
+    renders the night template and checks for winning conditions.
+    if werewolves are equal or more than villagers, redirect to winning werewolves
+    static page. otherwise allow the werewolves to vote on the kill.
+    if hunter was killed it redirects to hunter template
+    """
     global white_werewolf_token
     werewolves = []
     alive_werewolves = []
@@ -324,7 +357,12 @@ def night(req):
 
 # witch.html
 def witch(req):
-
+    """
+    if witch is dead or unassigned, redirect to day template
+    otherwise the witch choose a player to heal or kill.
+    if hunter was killed, it redirects to hunter template.
+    it checks for winning conditions
+    """
     global person_to_heal, person_to_kill, witch
     rest = []
 
@@ -376,7 +414,12 @@ def witch(req):
 
 #day_template.html
 def day(req):
-
+    """
+    renders the day template and allow them to vote.
+    checks for winning condition of humans and werewolves and redirects to the
+    static pages.
+    if hunter was killed, it redirects to the hunter template
+    """
     global hunter_killed_at, hunter_died
     werewolves = []
     werewolves_left_li = []
@@ -438,7 +481,9 @@ def day(req):
 
 # hunter.html
 def hunter(req):
-
+    """
+    renders the hunter template to allow the hunter to kill a player
+    """
     global person_to_kill, hunter_died, hunter_killed_at
     alive = []
 
@@ -467,7 +512,10 @@ def hunter(req):
 
 # white_werewolf.html
 def whiteWerewolf(req):
-
+    """
+    renders white werewolf template and allow him to kill a werewolf.
+    if the white werewolf is the only werewolf, redirects to witch template
+    """
     global person_to_kill
 
     werewolves = []
