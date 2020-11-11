@@ -11,7 +11,7 @@
 		<form name = 'PlayerForm' action='' method='POST'>
 			<div id="list">
 				{% csrf_token %}
-
+				<!-- Appends to the list of players already existing players (within the program) -->
 				{% for player in players_li_names %}
 					<div class="player_inf"><b class="player_name"> {{ player }} </b> 
 						<button type="submit" class="cross" name="p_to_remove" value="{{player}}">
@@ -24,30 +24,18 @@
 			<button type='submit' id = "Create_Player" onclick="validateForm()"><b> ADD PLAYER </b></button>
 		</form>
 		<br>
+		<!-- Checks if there are more than 5 players, if not, the mod can't proceed -->
 		{% if players_li_names|length > 5 %}
 			<a class="button" href="{% url 'roles' %}">NIGHT PHASE</a>
 		{% else %}
 			<b>We need 6 players at least in order to start!</b>
 		{% endif %}
 	</div>
-	
 
-	<script src="{% static 'js/events.js' %}">
+	<script src="{% static 'js/key_control.js' %}">
+	</script>
+	<script src="{% static 'js/validation.js' %}">
 	</script>	
-
-
-<script>
-	function validateForm()
-	{
-		var getPlayer = document.forms["PlayerForm"]["Pname"].value;
-		if (getPlayer === "")
-			{
-				alert('Please input a Name');
-				return false;
-			} 
-	}
-
-</script>
 
 </body>
 </html>

@@ -4,6 +4,11 @@ import werewolf.views
 
 
 class TestUrls(SimpleTestCase):
+    """
+    asserts the correct mapping
+    between views functions and URLs in urls.py file
+    for all urls and view functions
+    """
     def test_players_url(self):
         url = reverse('getPlayers')
         self.assertEqual(werewolf.views.getPlayers, resolve(url).func)
