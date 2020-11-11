@@ -14,6 +14,7 @@
       <form action="" name = "Check" method="POST">
       {% csrf_token %}
         <select name="vote" class="select-css">
+            <!-- Hunter can choose one alive player -->
             {% for person in alive %}
                     <option value="{{ person }}">{{ person.name }}</option>
             {% endfor %}

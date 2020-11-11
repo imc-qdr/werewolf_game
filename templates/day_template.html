@@ -8,6 +8,7 @@
 </head>
 <body>
     <div id="players_container">
+        <!-- appends players to the players_container -->
         {% for person in all %}
             <div class='player_container'>
                 {% if person.is_dead %}
@@ -26,6 +27,7 @@
             <label for="vote" id="label_txt">Vote to burn at stake</label>
             <div class="selectWrapper">
                 <select name="vote" id="player_select">
+                    <!-- vote to kill an alive person -->
                     {% for person in alive %}
                             <option value="{{ person }}">{{ person.name }}</option>
                     {% endfor %}
