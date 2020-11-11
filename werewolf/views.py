@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect
 import re as regular
 import random
 
-# Abdul write your classes here.
 
 # ---- CLASSES ---- #
 
@@ -15,7 +14,8 @@ class Player:
         self.is_dead = is_dead
         self.name = name
         self.is_lover = is_lover
-
+        
+# classes for roles are below
 class Villager(Player):
     def __init__(self, name, is_dead = False, is_lover = False, sleepwalk = False):
         super().__init__(name = name, is_dead = is_dead, is_lover = is_lover)
