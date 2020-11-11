@@ -65,6 +65,11 @@ isReadyToStart = False
 
 # ---- RETURN TEMPLATES ----#
 
+# index.html
+def index(req):
+    return render(req, 'index.html') 
+
+
 # get_players.html
 def getPlayers(req):
     global players_li_names
