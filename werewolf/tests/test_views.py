@@ -51,15 +51,6 @@ class TestViews(TestCase):
         self.assertEqual(views.players_li_names[1], 'vassili')
         self.assertEqual(views.players_li_names[0], 'abdulkader')
 
-    def test_get_players_NO_PLAYERS(self):
-        """
-        if no players were added, assert an http response code Error 204
-        """
-        views.players_li_names = []
-
-        response = self.client.post(self.getPlayers)
-        self.assertEqual(response.status_code, 204)
-
     def test_assignRoles(self):
         """
         assign there players name to three role objects
