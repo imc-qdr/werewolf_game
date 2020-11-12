@@ -96,12 +96,7 @@ def getPlayers(req):
             pass
 
         else:
-
-            if req.POST['Pname'] in players_li_names:
-                print('cannot add player with same name in the list')
-                pass
-
-            else:
+            if req.POST['Pname'] not in players_li_names:
                 players_li_names.append(str(req.POST['Pname']))
 
     context_dict = \
