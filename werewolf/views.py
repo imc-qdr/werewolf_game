@@ -87,22 +87,8 @@ def getPlayers(req):
             print('got a player to remove ', req.POST['p_to_remove'])
             players_li_names.remove(str(req.POST['p_to_remove']))
 
-        # if the player name is empty return 204 status code. in front end there is a restriction
-        # but for more safety we put also in the back end to prevent server crashing
-        if not req.POST.get('Pname', False):
-            return HttpResponse(status=204)
-
-        elif (len(players_li_names) >= 20):
-            print('cannot add more players')
-            pass
-
         else:
-
-            if req.POST['Pname'] in players_li_names:
-                print('cannot add player with same name in the list')
-                pass
-
-            else:
+            if req.POST['Pname'] not in players_li_names:
                 players_li_names.append(str(req.POST['Pname']))
 
     context_dict = \
